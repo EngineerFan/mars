@@ -21,9 +21,9 @@ public class MarsApplication implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Transaction t = Cat.newTransaction();
+        Transaction t = Cat.newTransaction("URL","run");
         try {
-            Cat.logEvent("URL.Server", null, Event.SUCCESS, "ip=" + null + "&...");
+            Cat.logEvent("URL.Server", "XL123456", Event.SUCCESS, "ip=" + null + "&...");
             Cat.logMetricForCount("OrderCount");
             Cat.logMetricForDuration("KeyForTimer", 5);
 

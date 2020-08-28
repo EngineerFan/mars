@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>excel</title>
+
+    <!-- import Vue.js -->
+    <script src="plugins/vue.min.js"></script>
+    <!-- ajax -->
+    <script src="plugins/axios.min.js"></script>
+    <!-- import stylesheet -->
+    <link href="plugins/styles/iview.css" rel="stylesheet">
+    <!-- import iView -->
+    <script src="plugins/iview.min.js"></script>
+    <!-- echart -->
+    <script type="application/javascript" src="plugins/echarts.min.js"></script>
+    <script src="plugins/dom-to-image.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <template>
+        <!--        <Upload-->
+        <!--                multiple-->
+        <!--                type="drag"-->
+        <!--                action="/excel/upload">-->
+        <!--            <div style="padding: 20px 0">-->
+        <!--                <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>-->
+        <!--                <p>Click or drag files here to upload</p>-->
+        <!--            </div>-->
+        <!--        </Upload>-->
+
+        <!--        <div>-->
+        <!--            <form @submit.prevent="submit" enctype="application/x-www-form-urlencoded;charset=UTF-8"-->
+        <!--                  style="display: none" target="" action="/ppt/export">-->
+        <!--                <Button type="submit primary">导出</Button>-->
+        <!--            </form>-->
+        <!--        </div>-->
+
+
+        <div id="main" style="width: 600px;height:400px;"></div>
+        <div id="test-table">
+            <table id="my-table" border="1">
+                <tr style="color: #2d8cf0">
+                    <th>Month</th>
+                    <th>Savings</th>
+                </tr>
+                <tr>
+                    <td>January</td>
+                    <td>$100</td>
+                </tr>
+            </table>
+        </div>
+        <br/>
+
+        <br/>
+
+        <br/>
+
+        <br/>
+
+    </template>
+</div>
+</body>
+
+<script type="text/javascript">
+
+    let app = new Vue({
+        el: '#app',
+        data() {
+            return {
+                msg: '你好'
+            }
+        },
+        mounted: function () {
+            this.initData()
+        },
+        methods: {
+            submit() {
+                const formdata = {};
+                this.$http.post("/ppt/export", formdata).then(function (data) {
+                    if (data.json().state == "success") {
+                        console.log("success")
+                    }
+                }).catch(function () {
+                    console.log("服务器异常！")
+                })
+            },
+
+            initData() {
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('main'));
+
+                // 指定图表的配置项和数据
+                var option = {
+                    title: {
+                        text: '测试数据'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data: ['销量']
+                    },
+                    xAxis: {
+                        data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+                    },
+                    yAxis: {},
+                    series: [{
+                        name: '销量',
+                        type: 'bar',
+                        data: [5, 20, 36, 10, 10, 20]
+                    }]
+                };
+
+// 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+                var picBase64Info = myChart.getDataURL()
+                console.log(picBase64Info)
+
+
+                //转换表格为PNG
+                var tableNode = document.getElementById("my-table")
+                domtoimage.toPng(tableNode).then(function (dataUrl) {
+                    var img = new Image();
+                    img.src = dataUrl;
+                    document.body.appendChild(img)
+                }).catch(function (error) {
+                    console.error('oh ,  i am sorry!')
+                });
+            }
+        }
+    })
+</script>
+</html>

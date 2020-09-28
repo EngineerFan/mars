@@ -11,6 +11,8 @@
 package com.ryan.research.mars.controller;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.hslf.usermodel.HSLFSlide;
+import org.apache.poi.hslf.usermodel.HSLFSlideShow;
 import org.apache.poi.sl.usermodel.SlideShowFactory;
 import org.apache.poi.xslf.usermodel.*;
 import org.springframework.http.HttpHeaders;
@@ -52,8 +54,8 @@ public class PptController {
     @RequestMapping("/export")
     @ResponseBody
     public ResponseEntity<byte[]> exportPPT(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        XMLSlideShow ppt = new XMLSlideShow();
-        XSLFSlide shape = ppt.createSlide();
+        HSLFSlideShow ppt = new HSLFSlideShow();
+        HSLFSlide shape = ppt.createSlide();
         String downloadFileName = "demo.ppt";
         File f = new File("" + downloadFileName);
         FileOutputStream out = null;

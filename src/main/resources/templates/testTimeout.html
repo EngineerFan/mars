@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试ajax超时</title>
+    <script src="/plugins/jquery.js"></script>
+    <script src="/plugins/jquery.easyui.min.js"></script>
+</head>
+<body>
+<div id="p" class="easyui-progressbar" data-options="value:60" style="width:400px;"></div>
+
+<button type="button" onclick="timeoutTest()">点哇</button>
+</body>
+<script type="text/javascript">
+    $(function () {
+        let val = $('#p').progressbar('getValue');
+        let i = setInterval((val) => {
+            if (val > 100) {
+                clearInterval(i);
+            }
+            val = val + 5;
+            $("#p").progressbar('setValue', val);
+        }, 2000);
+        console.log('current val: ', val);
+    });
+
+    function timeoutTest() {
+        $.ajax(
+            {
+                url: '/v1//users/list',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    if (data.code == 200) {
+                        alert(data.code)
+                    } else {
+                        alert(data)
+                        console.log(data.code)
+                        console.log(data.message)
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest)
+                    console.log(textStatus)
+                    console.log('error');
+                    console.log(errorThrown)
+                }
+            }
+        )
+    }
+</script>
+</html>

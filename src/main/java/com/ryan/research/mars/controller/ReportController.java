@@ -10,7 +10,9 @@
  */
 package com.ryan.research.mars.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -20,10 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2020/8/27 15:44
  * @since JDK 1.8
  */
-@RestController
-@RequestMapping("/")
+@Controller
 public class ReportController {
 
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String testTimeout() {
+        return "testTimeout";
+    }
 
 }
 
